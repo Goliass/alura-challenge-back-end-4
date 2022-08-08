@@ -1,0 +1,27 @@
+{
+  "name": "alura_challenge_back_end_4",
+  "version": "1.0.0",
+  "description": "Alura Challenge Back-end 4: API para controle de orçamento familiar",
+  "main": "server.js",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "mongoose": "^6.5.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Goliass/alura-challenge-back-end-4.git"
+  },
+  "author": "Elías Sauthier",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Goliass/alura-challenge-back-end-4/issues"
+  },
+  "homepage": "https://github.com/Goliass/alura-challenge-back-end-4#readme"
+}

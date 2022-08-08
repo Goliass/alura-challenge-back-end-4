@@ -1,1 +1,13 @@
-Alura Challenge Back-end 4: PI para controle de orçamento familiar
+Alura Challenge Back-end 4: API para controle de orçamento familiar
+
+* Links oficiais do challenge:
+  * https://www.alura.com.br/challenges/back-end-4/semana-01-implementando-api-rest
+  * https://trello.com/b/ofAXrAlA/challenge-backend-semana-1
+
+
+* Tasks (cópia do trello do Challenge): https://trello.com/b/LL2pc08f/challenge-backend-alura-semana-1
+
+* ferramentas / tecnologias:
+
+  * banco de dados MongoDB Atlas: serviço de banco em nuvem
+
