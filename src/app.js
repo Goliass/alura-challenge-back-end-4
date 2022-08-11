@@ -25,4 +25,19 @@ app.get('/receipts', (req, res) => {
   });
 });
 
+app.post('/receipts', (req, res) => {
+  let body = req.body;
+  body.description = body.description.toUpperCase();
+
+  let receipt = new receipts(body);
+
+  receipt.save((error) => {
+    if(error) {
+      res.status(500).send({message: `${error.message} - Error registering receipt`});
+    } else {
+      res.status(201).send(receipt.toJSON());
+    }
+  })
+})
+
 export default app;
