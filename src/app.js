@@ -32,12 +32,24 @@ app.post('/receipts', (req, res) => {
   let receipt = new receipts(body);
 
   receipt.save((error) => {
-    if(error) {
+    if (error) {
       res.status(500).send({message: `${error.message} - Error registering receipt`});
     } else {
       res.status(201).send(receipt.toJSON());
     }
   })
 })
+
+app.get('/receipts/:id', (req, res) => {
+  const id = req.params.id;
+
+  receipts.findById(id, (error, receipts) => {
+    if (error) {
+      res.status(400).send({message: `${error.message} - Receipt ID not found`});
+    } else {
+      res.status(200).send(receipts);
+    }
+  });
+});
 
 export default app;
