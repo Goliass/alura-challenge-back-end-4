@@ -52,4 +52,27 @@ app.get('/receipts/:id', (req, res) => {
   });
 });
 
+app.put('/receipts/:id', (req, res) => {
+  const id = req.params.id;
+  const body = req.body;
+
+  if ((body && Object.keys(body).length === 0 && Object.getPrototypeOf(body) === Object.prototype) ||
+    ('description' in body && !body.description) || 
+    ('value' in body && !body.value) || 
+    ('date' in body && !body.date)) {
+    res.status(400).send({message: 'Invalid body'});
+    return;
+  }
+
+  body.description = body.description.toUpperCase();
+
+  receipts.findByIdAndUpdate(id, {$set: body}, (error) => {
+    if(!error) {
+      res.status(200).send({message: `Receipt ${id} sucessfully updated`});
+    } else {
+      res.status(500).send({message: error.message});
+    }
+  })
+});
+
 export default app;
