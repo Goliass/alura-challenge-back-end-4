@@ -67,12 +67,25 @@ app.put('/receipts/:id', (req, res) => {
   body.description = body.description.toUpperCase();
 
   receipts.findByIdAndUpdate(id, {$set: body}, (error) => {
-    if(!error) {
+    if (!error) {
       res.status(200).send({message: `Receipt ${id} sucessfully updated`});
     } else {
       res.status(500).send({message: error.message});
     }
-  })
+  });
 });
+
+app.delete('/receipts/:id', (req, res) => {
+  const id = req.params.id;
+
+  receipts.findByIdAndDelete(id, (error) => {
+    if (!error) {
+      res.status(200).send({message: `Receipt ${id} removed`});
+    } else {
+      res.status(500).send({message: error.message});
+    }
+  });
+});
+  
 
 export default app;
