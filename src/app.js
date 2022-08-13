@@ -86,6 +86,20 @@ app.delete('/receipts/:id', (req, res) => {
     }
   });
 });
+
+
+import expenses from "./models/Expense.js";
+
+app.get('/expenses', (req, res) => {
+  expenses.find((error, expenses) => {
+    if (error) {
+      res.status(500).json({message: 'Error retrieving expenses'});
+    }
+    
+    res.status(200).json(expenses);
+  });
+});
   
+
 
 export default app;
