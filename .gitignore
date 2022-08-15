@@ -1,0 +1,26 @@
+# <global>
+*.mp4
+*.pdf
+*.*~
+*.zip
+*.tar
+*.7z
+# </global>
+
+# general
+ignore/
+
+# Various
+roadmap.md
+
+# NPM (node package manager)
+node_modules/
+
+# Others
+.vscode/
+
+# enviroment
+.env
+.env.test
+.env.json
+.env.js
