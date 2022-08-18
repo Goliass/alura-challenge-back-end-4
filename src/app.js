@@ -1,8 +1,7 @@
 import express from "express";
+
 import db from "./config/dbConnect.js";
 import routes from "./routes/routes.js";
-
-import receipts from "./models/Receipt.js";
 
 db.on("error", console.log.bind(console, 'Database connection error'));
 db.once("open", () => {
