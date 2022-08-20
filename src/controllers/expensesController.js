@@ -52,7 +52,7 @@ class ExpensesController {
       return;
     }
   
-    body.description = body.description.toUpperCase();
+    if (body.description) body.description = body.description.toUpperCase();
   
     expenses.findByIdAndUpdate(id, {$set: body}, (error) => {
       if (!error) {

@@ -1,6 +1,6 @@
 import express from "express";
 
-import ExpensesController from "../controllers/receiptsController.js";
+import ExpensesController from "../controllers/expensesController.js";
 
 const expensesRouter = express.Router();
 
