@@ -5,6 +5,8 @@ const expensesRelationship = {
   relatedExternalFieldName: "description"
 };
 
+const defaultExpenseCategoryId = "630434804cbef5fa4fa579a2";
+
 class ExpensesController {
   static list = (req, res) => { 
     expenses.find()
@@ -23,6 +25,10 @@ class ExpensesController {
   static add = (req, res) => { 
     let body = req.body;
     body.description = body.description.toUpperCase();
+
+    if (!body.category) {
+      body.category = defaultExpenseCategoryId;
+    }
   
     let expense = new expenses(body);
   
