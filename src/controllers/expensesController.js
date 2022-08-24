@@ -1,11 +1,18 @@
 import expenses from "../models/Expense.js";
 
-class ExpensesController {
+const expensesRelationship = {
+  fieldName: "category",
+  relatedExternalFieldName: "description"
+};
 
+class ExpensesController {
   static list = (req, res) => { 
-    expenses.find((error, expenses) => {
+    expenses.find()
+      .populate('category', 'description')
+      .exec((error, expenses) => {
       if (error) {
         res.status(500).json({message: 'Error retrieving expenses'});
+        console.log(error);
       }
       
       res.status(200).json(expenses);
@@ -27,11 +34,13 @@ class ExpensesController {
       }
     })
   };
-  
+
   static find = (req, res) => { 
     const id = req.params.id;
   
-    expenses.findById(id, (error, expenses) => {
+    expenses.findById(id)
+      .populate('category', 'description')
+      .exec((error, expenses) => { 
       if (error) {
         res.status(400).send({message: `${error.message} - Expense ID not found`});
       } else {

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const collectionName = "expenses";
-const expensesCategoriesCollectionName = "expensesCategories";
+const expensesCategoriesCollectionName = "expenses_categories";
 const sortOrder = {
   ascending: 1,
   descending: -1
