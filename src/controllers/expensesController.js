@@ -8,17 +8,31 @@ const expensesRelationship = {
 const defaultExpenseCategoryId = "630434804cbef5fa4fa579a2";
 
 class ExpensesController {
-  static list = (req, res) => { 
-    expenses.find()
-      .populate('category', 'description')
-      .exec((error, expenses) => {
-      if (error) {
-        res.status(500).json({message: 'Error retrieving expenses'});
-        console.log(error);
-      }
-      
-      res.status(200).json(expenses);
-    });
+  static list = (req, res) => {
+    const descriptionQuery = req.query.description;
+
+    if (descriptionQuery) {
+      expenses.find({description: {$regex: descriptionQuery, $options: 'i'}})
+        .populate('category', 'description')
+        .exec((error, receipts) => {
+          if (error) {
+            res.status(500).json({message: 'Error retrieving expenses by query'});
+            console.log(error);
+          }
+          res.status(200).json(receipts);
+        });
+    } else {
+      expenses.find()
+        .populate('category', 'description')
+        .exec((error, expenses) => {
+        if (error) {
+          res.status(500).json({message: 'Error retrieving expenses'});
+          console.log(error);
+        }
+        
+        res.status(200).json(expenses);
+      });
+    }
   };
     
   
