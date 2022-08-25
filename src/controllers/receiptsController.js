@@ -3,12 +3,26 @@ import receipts from "../models/Receipt.js";
 class ReceiptsController {
 
   static list = (req, res) => { 
-    receipts.find((error, receipts) => {
-      if (error) {
-        res.status(500).json({message: 'Error retrieving receipts'});
-      }
-      res.status(200).json(receipts);
-    });
+    const descriptionQuery = req.query.description;
+
+    if (descriptionQuery) {
+      receipts.find({description: {$regex: descriptionQuery, $options: 'i'}})
+        .exec((error, receipts) => {
+          if (error) {
+            res.status(500).json({message: 'Error retrieving receipts by query'});
+            console.log(error);
+          }
+          res.status(200).json(receipts);
+        });
+    } else {
+      receipts.find((error, receipts) => {
+        if (error) {
+          res.status(500).json({message: 'Error retrieving receipts'});
+          console.log(error);
+        }
+        res.status(200).json(receipts);
+      });
+    }
   };
   
   static add = (req, res) => {
