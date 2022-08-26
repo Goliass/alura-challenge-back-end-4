@@ -24,6 +24,32 @@ class ReceiptsController {
       });
     }
   };
+
+  static listByMonth = (req, res) => {
+    const {year, month} = req.params;
+
+    if (year.length != 4) {
+      res.status(400).json({message: 'year must have 4 digits'});
+      return;
+    }
+    
+    receipts.find({
+        $expr: {
+          $and: [
+            { "$eq": [{"$year": "$date"}, year] },
+            { "$eq": [{"$month": "$date"}, month] }
+          ]
+        }
+      })
+      .exec((error, receipts) => {
+      if (error) {
+        res.status(500).json({message: 'Error retrieving receipts'});
+        console.log(error);
+      }
+      res.status(200).json(receipts);
+    });
+  };
+
   
   static add = (req, res) => {
     let body = req.body;
