@@ -24,8 +24,20 @@ class ReceiptsController {
       });
     }
   };
+  
+  static findById = (req, res) => {
+    const id = req.params.id;
+  
+    receipts.findById(id, (error, receipts) => {
+      if (error) {
+        res.status(400).send({message: `${error.message} - Receipt ID not found`});
+      } else {
+        res.status(200).send(receipts);
+      }
+    });
+  };
 
-  static listByMonth = (req, res) => {
+  static findByYearAndMonth = (req, res) => {
     const {year, month} = req.params;
 
     if (year.length != 4) {
@@ -43,7 +55,7 @@ class ReceiptsController {
       })
       .exec((error, receipts) => {
       if (error) {
-        res.status(500).json({message: 'Error retrieving receipts'});
+        res.status(500).json({message: 'Error retrieving receipts by year and month'});
         console.log(error);
       }
       res.status(200).json(receipts);
@@ -66,17 +78,6 @@ class ReceiptsController {
     })
   };
   
-  static find = (req, res) => {
-    const id = req.params.id;
-  
-    receipts.findById(id, (error, receipts) => {
-      if (error) {
-        res.status(400).send({message: `${error.message} - Receipt ID not found`});
-      } else {
-        res.status(200).send(receipts);
-      }
-    });
-  };
   
   static update = (req, res) => {
     const id = req.params.id;

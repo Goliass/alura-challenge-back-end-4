@@ -14,12 +14,12 @@ class ExpensesController {
     if (descriptionQuery) {
       expenses.find({description: {$regex: descriptionQuery, $options: 'i'}})
         .populate('category', 'description')
-        .exec((error, receipts) => {
+        .exec((error, expenses) => {
           if (error) {
             res.status(500).json({message: 'Error retrieving expenses by query'});
             console.log(error);
           }
-          res.status(200).json(receipts);
+          res.status(200).json(expenses);
         });
     } else {
       expenses.find()
@@ -35,6 +35,45 @@ class ExpensesController {
     }
   };
     
+  static findById = (req, res) => { 
+    const id = req.params.id;
+  
+    expenses.findById(id)
+      .populate('category', 'description')
+      .exec((error, expenses) => { 
+      if (error) {
+        res.status(400).send({message: `${error.message} - Expense ID not found`});
+      } else {
+        res.status(200).send(expenses);
+      }
+    });
+  };
+
+  static findByYearAndMonth = (req, res) => {
+    const {year, month} = req.params;
+
+    if (year.length != 4) {
+      res.status(400).json({message: 'year must have 4 digits'});
+      return;
+    }
+    
+    expenses.find({
+        $expr: {
+          $and: [
+            { "$eq": [{"$year": "$date"}, year] },
+            { "$eq": [{"$month": "$date"}, month] }
+          ]
+        }
+      })
+      .exec((error, expenses) => {
+        if (error) {
+          res.status(500).json({message: 'Error retrieving expenses by year and month'});
+          console.log(error);
+        }
+
+        res.status(200).json(expenses);
+      });
+  };
   
   static add = (req, res) => { 
     let body = req.body;
@@ -55,19 +94,6 @@ class ExpensesController {
     })
   };
 
-  static find = (req, res) => { 
-    const id = req.params.id;
-  
-    expenses.findById(id)
-      .populate('category', 'description')
-      .exec((error, expenses) => { 
-      if (error) {
-        res.status(400).send({message: `${error.message} - Expense ID not found`});
-      } else {
-        res.status(200).send(expenses);
-      }
-    });
-  };
   
   static update = (req, res) => { 
     const id = req.params.id;
