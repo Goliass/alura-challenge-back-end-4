@@ -1,4 +1,5 @@
 import users from "../models/User.js";
+import * as authentication from "../auth/authentication.js";
 
 class UsersController {
 
@@ -12,18 +13,30 @@ class UsersController {
     });
   };
   
-  static add = (req, res) => {
-    let body = req.body;
+  static add = async (req, res) => {
+    try {
+      let body = req.body;
+      body.passwordHash = await authentication.generatePassword(body.password);
   
-    let user = new users(body);
-  
-    user.save((error) => {
-      if (error) {
-        res.status(500).send({message: `${error.message} - Error registering user`});
-      } else {
-        res.status(201).send(user.toJSON());
-      }
-    })
+      let user = new users(body);
+      ;
+    
+      user.save((error) => {
+        if (error) {
+          console.log(error);
+          res.status(500).send({message: `${error.message} - Error registering user`});
+          return;
+        } else {
+          res.status(201).send(user.toJSON());
+          return;
+        }
+      })
+      
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({message: `${error.message} - Error registering user`});
+      return;
+    }
   };
   
   static delete = (req, res) => {
