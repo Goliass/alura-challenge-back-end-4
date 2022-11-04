@@ -12,6 +12,23 @@ class UsersController {
       res.status(200).json(users);
     });
   };
+
+  static find = (req, res) => { 
+    const emailParam = req.params.email;
+
+    findByEmail(emailParam, (error, user) => {
+      if (error) {
+        res.status(500).json({message: 'Error retrieving user by query'});
+        console.log(error);
+      }
+
+      if (user) {
+        res.status(200).json(user);
+      } else {
+        res.status(404).json();
+      }
+    });
+  };
   
   static add = async (req, res) => {
     try {
@@ -58,6 +75,23 @@ class UsersController {
     });
   };
 
+  static login = async (req, res) => {
+    try {
+      res.status(204).send();
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({message: error.message});
+    }
+  }
 }
 
-export default UsersController;
+function findByEmail(email, func) {
+  try {
+    users.findOne({ email: email }, func);
+  } catch (error) {
+   console.log(error); 
+   throw new Error(error);
+  }
+}
+
+export { UsersController, findByEmail };
