@@ -8,6 +8,9 @@ db.once("open", () => {
   console.log('Database connection succeed');
 })
 
+import { localStrategy } from "./auth/authStrategy.js";
+localStrategy();
+
 const app = express();
 
 app.use(express.json());
