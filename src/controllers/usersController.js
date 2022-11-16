@@ -77,6 +77,8 @@ class UsersController {
 
   static login = async (req, res) => {
     try {
+      const token = authentication.generateJwtToken(req.user);
+      res.set('Authorization', token);
       res.status(204).send();
     } catch (error) {
       console.log(error);
