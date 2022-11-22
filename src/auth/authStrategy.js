@@ -1,8 +1,12 @@
 import passport from 'passport';
-import Strategy from 'passport-local';
+import { Strategy as LocalStrategy} from 'passport-local';
 import bcrypt from 'bcrypt';
+import jsonwebtoken from 'jsonwebtoken';
+import { Strategy as BearerStrategy } from 'passport-http-bearer';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
-import { findByEmail } from "../controllers/usersController.js";
+import { findByEmail, findById } from "../controllers/usersController.js";
 import { InvalidArgumentError } from '../errors.js';
 
 function verifyUser(user) {
@@ -29,7 +33,7 @@ async function verifyPassword(senha, senhaHash) {
 const localStrategy = () => {
   try {
     passport.use(
-      new Strategy(
+      new LocalStrategy(
         {
           usernameField: 'email',
           passwordField: 'password',
@@ -67,5 +71,33 @@ const localStrategy = () => {
     throw new Error(error);
   }
 }
+
+passport.use(
+  new BearerStrategy(
+    async (token, done) => {
+      try {
+        const payload = jsonwebtoken.verify(token, process.env.jwtKey);
+
+        findById(payload.id, async (error, user) => {
+          try {
+            if (error) {
+              console.log(error);
+              done(error);
+            }
+
+            verifyUser(user);
+            done(null, user);
+          } catch (error) {
+            console.log(error);
+            done(error);
+          }
+        }); 
+      } catch (error) {
+        console.log(error);
+        done(error);
+      }      
+    }
+  )
+)
 
 export { localStrategy };
