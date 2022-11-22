@@ -13,13 +13,30 @@ class UsersController {
     });
   };
 
-  static find = (req, res) => { 
+  static findWithEmail = (req, res) => { 
     const emailParam = req.params.email;
 
     findByEmail(emailParam, (error, user) => {
       if (error) {
-        res.status(500).json({message: 'Error retrieving user by query'});
         console.log(error);
+        res.status(500).json({message: 'Error retrieving user by query'});
+      }
+
+      if (user) {
+        res.status(200).json(user);
+      } else {
+        res.status(404).json();
+      }
+    });
+  };
+
+  static findWithId = (req, res) => { 
+    const idParam = req.params.id;
+
+    findById(idParam, (error, user) => {
+      if (error) {
+        console.log(error);
+        res.status(500).json({message: `Error retrieving user by Id '${idParam}'`});
       }
 
       if (user) {
@@ -96,4 +113,13 @@ function findByEmail(email, func) {
   }
 }
 
-export { UsersController, findByEmail };
+function findById(id, func) {
+  try {
+    users.findOne({ _id: id }, func);
+  } catch (error) {
+   console.log(error); 
+   throw new Error(error);
+  }
+}
+
+export { UsersController, findByEmail, findById };
