@@ -5,11 +5,11 @@ class ExpensesCategoriesController {
   static list = (req, res) => { 
     ExpenseCategory.find((error, expensesCategories) => {
       if (error) {
-        res.status(500).json({message: 'Error retrieving expenses categories'});
         console.log(error);
+        return res.status(500).json({message: 'Error retrieving expenses categories'});
       }
 
-      res.status(200).json(expensesCategories);
+      return res.status(200).json(expensesCategories);
     });
   };
 
@@ -21,9 +21,10 @@ class ExpensesCategoriesController {
   
     expenseCategory.save((error) => {
       if (error) {
-        res.status(500).send({message: `${error.message} - Error registering expense category`});
+        console.log(error);
+        return res.status(500).send({message: `${error.message} - Error registering expense category`});
       } else {
-        res.status(201).send(expenseCategory.toJSON());
+        return res.status(201).send(expenseCategory.toJSON());
       }
     })
   };

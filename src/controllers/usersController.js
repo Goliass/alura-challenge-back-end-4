@@ -6,10 +6,10 @@ class UsersController {
   static list = (req, res) => { 
     users.find((error, users) => {
       if (error) {
-        res.status(500).json({message: 'Error retrieving users'});
         console.log(error);
+        return res.status(500).json({message: 'Error retrieving users'});
       }
-      res.status(200).json(users);
+      return res.status(200).json(users);
     });
   };
 
@@ -19,13 +19,13 @@ class UsersController {
     findByEmail(emailParam, (error, user) => {
       if (error) {
         console.log(error);
-        res.status(500).json({message: 'Error retrieving user by query'});
+        return res.status(500).json({message: 'Error retrieving user by query'});
       }
 
       if (user) {
-        res.status(200).json(user);
+        return res.status(200).json(user);
       } else {
-        res.status(404).json();
+        return res.status(404).json();
       }
     });
   };
@@ -36,13 +36,13 @@ class UsersController {
     findById(idParam, (error, user) => {
       if (error) {
         console.log(error);
-        res.status(500).json({message: `Error retrieving user by Id '${idParam}'`});
+        return res.status(500).json({message: `Error retrieving user by Id '${idParam}'`});
       }
 
       if (user) {
-        res.status(200).json(user);
+        return res.status(200).json(user);
       } else {
-        res.status(404).json();
+        return res.status(404).json();
       }
     });
   };
@@ -58,18 +58,15 @@ class UsersController {
       user.save((error) => {
         if (error) {
           console.log(error);
-          res.status(500).send({message: `${error.message} - Error registering user`});
-          return;
+          return res.status(500).send({message: `${error.message} - Error registering user`});
         } else {
-          res.status(201).send(user.toJSON());
-          return;
+          return res.status(201).send(user.toJSON());
         }
       })
       
     } catch (error) {
       console.log(error);
-      res.status(500).send({message: `${error.message} - Error registering user`});
-      return;
+      return res.status(500).send({message: `${error.message} - Error registering user`});
     }
   };
   
@@ -78,16 +75,17 @@ class UsersController {
 
     const idPattern = /^[0-9a-f]{24}$/i;
     if (!id.match(idPattern)) {
-      res.status(400).json({message: `id doesn't match the patern ${idPattern}`});
-      return;
+      return res.status(400).json({message: `id doesn't match the patern ${idPattern}`});
     }
     
-    users.findByIdAndDelete(id, (error) => {
-      if (!error) {
-        res.status(200).send({message: `User ${id} removed`});
+    users.findByIdAndDelete(id, (error, model) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).send({message: error.message});
+      } else if (!model) {
+        return res.status(404).send();
       } else {
-        res.status(500).send({message: error.message});
-        console.log(error.message);
+        return res.status(200).send({message: `User ${id} removed`});
       }
     });
   };
@@ -96,10 +94,10 @@ class UsersController {
     try {
       const token = authentication.generateJwtToken(req.user);
       res.set('Authorization', token);
-      res.status(204).send();
+      return res.status(204).send();
     } catch (error) {
       console.log(error);
-      res.status(500).send({message: error.message});
+      return res.status(500).send({message: error.message});
     }
   }
 }

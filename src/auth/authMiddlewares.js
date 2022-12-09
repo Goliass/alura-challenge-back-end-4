@@ -6,8 +6,7 @@ function localStrategy(req, res, next) {
       'local', { session: false },
       (error, user) => {
         if (error && new RegExp("InvalidArgumentError").test(error.message)) {
-          res.status(401).json({ error: error.message });
-          return;
+          return res.status(401).json({ error: error.message });
         }
   
         if (error) {
@@ -33,11 +32,9 @@ function bearerStrategy(req, res, next) {
     passport.authenticate(
       'bearer', { session: false },
       (error, user) => {
-        console.log(error);
 
         if (error && (new RegExp("JsonWebTokenError").test(error.name) || new RegExp("TokenExpiredError").test(error.name))) {
-          res.status(401).json({ error: error.message });
-          return;
+          return res.status(401).json({ error: error.message });
         }
   
         if (error) {
