@@ -13,7 +13,7 @@ function generateJwtToken(user) {
     id: user._id
   };
 
-  const token = jsonwebtoken.sign(payload, process.env.jwtKey, { expiresIn: '15m' });
+  const token = jsonwebtoken.sign(payload, process.env.jwtKey, { expiresIn: process.env.jwtExpirationTimeSpan });
   return token;
 }
 
