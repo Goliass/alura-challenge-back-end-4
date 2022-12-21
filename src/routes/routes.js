@@ -1,11 +1,10 @@
-import express from "express";
 import receiptsRoutes from "./receiptsRoutes.js";
 import expensesRoutes from "./expensesRoutes.js";
 import expensesCategoriesRoutes from "./expensesCategoriesRoutes.js";
 import extractsRoutes from "./extractsRoutes.js";
+import usersRoutes from "./usersRoutes.js";
 
 const routes = (app) => {
-  // app.route('/').get((req, res) => {
   app.get("/", (req, res) => {
     res.status(200).send('Welcome to family budget API!');
   })
@@ -14,7 +13,8 @@ const routes = (app) => {
     receiptsRoutes,
     expensesRoutes,
     expensesCategoriesRoutes,
-    extractsRoutes
+    extractsRoutes,
+    usersRoutes
   );
 }
 

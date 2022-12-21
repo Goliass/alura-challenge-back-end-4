@@ -7,8 +7,7 @@ class ExtractsController {
     const { year, month } = req.params;
 
     if (year.length != 4) {
-      res.status(400).json({message: 'year must have 4 digits'});
-      return;
+      return res.status(400).json({message: 'year must have 4 digits'});
     }  
 
     Promise.all([
@@ -31,12 +30,11 @@ class ExtractsController {
         })
       }
 
-      res.status(200).json(extract);
-      return;
+      return res.status(200).json(extract);
     })
     .catch(error => {
       console.log(error);
-      res.status(500).json({message: `Error retrieving extract by year and month (${year}-${month})`});
+      return res.status(500).json({message: `Error retrieving extract by year and month (${year}-${month})`});
     }); 
   };
 }

@@ -9,18 +9,18 @@ class ReceiptsController {
       receipts.find({description: {$regex: descriptionQuery, $options: 'i'}})
         .exec((error, receipts) => {
           if (error) {
-            res.status(500).json({message: 'Error retrieving receipts by query'});
             console.log(error);
+            return res.status(500).json({message: 'Error retrieving receipts by query'});
           }
-          res.status(200).json(receipts);
+          return res.status(200).json(receipts);
         });
     } else {
       receipts.find((error, receipts) => {
         if (error) {
-          res.status(500).json({message: 'Error retrieving receipts'});
           console.log(error);
+          return res.status(500).json({message: 'Error retrieving receipts'});
         }
-        res.status(200).json(receipts);
+        return res.status(200).json(receipts);
       });
     }
   };
@@ -30,9 +30,10 @@ class ReceiptsController {
   
     receipts.findById(id, (error, receipts) => {
       if (error) {
-        res.status(400).send({message: `${error.message} - Receipt ID not found`});
+        console.log(error);
+        return res.status(500).send({message: `${error.message} - Error finding receipt ${id}`});
       } else {
-        res.status(200).send(receipts);
+        return res.status(200).send(receipts);
       }
     });
   };
@@ -41,8 +42,7 @@ class ReceiptsController {
     const {year, month} = req.params;
 
     if (year.length != 4) {
-      res.status(400).json({message: 'year must have 4 digits'});
-      return;
+      return res.status(400).json({message: 'year must have 4 digits'});
     }
     
     receipts.find({
@@ -55,10 +55,10 @@ class ReceiptsController {
       })
       .exec((error, receipts) => {
       if (error) {
-        res.status(500).json({message: 'Error retrieving receipts by year and month'});
         console.log(error);
+        return res.status(500).json({message: 'Error retrieving receipts by year and month'});
       }
-      res.status(200).json(receipts);
+      return res.status(200).json(receipts);
     });
   };
 
@@ -71,9 +71,10 @@ class ReceiptsController {
   
     receipt.save((error) => {
       if (error) {
-        res.status(500).send({message: `${error.message} - Error registering receipt`});
+        console.log(error);
+        return res.status(500).send({message: `${error.message} - Error registering receipt`});
       } else {
-        res.status(201).send(receipt.toJSON());
+        return res.status(201).send(receipt.toJSON());
       }
     })
   };
@@ -87,17 +88,20 @@ class ReceiptsController {
       ('description' in body && !body.description) || 
       ('value' in body && !body.value) || 
       ('date' in body && !body.date)) {
-      res.status(400).send({message: 'Invalid body'});
-      return;
+      return res.status(400).send({message: 'Invalid body'});
     }
   
     body.description = body.description.toUpperCase();
   
-    receipts.findByIdAndUpdate(id, {$set: body}, (error) => {
-      if (!error) {
-        res.status(200).send({message: `Receipt ${id} sucessfully updated`});
+    receipts.findByIdAndUpdate(id, {$set: body}, (error, model) => {
+      
+      if (error) {
+        console.log(error);
+        return res.status(500).send({message: error.message});
+      } else if (!model) {
+        return res.status(404).send();
       } else {
-        res.status(500).send({message: error.message});
+        return res.status(200).send({message: `Receipt ${id} sucessfully updated`});
       }
     });
   };
@@ -105,11 +109,14 @@ class ReceiptsController {
   static delete = (req, res) => {
     const id = req.params.id;
   
-    receipts.findByIdAndDelete(id, (error) => {
-      if (!error) {
-        res.status(200).send({message: `Receipt ${id} removed`});
+    receipts.findByIdAndDelete(id, (error, model) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).send({message: error.message});
+      } else if (!model) {
+        return res.status(404).send();
       } else {
-        res.status(500).send({message: error.message});
+        return res.status(200).send({message: `Receipt ${id} removed`});
       }
     });
   };

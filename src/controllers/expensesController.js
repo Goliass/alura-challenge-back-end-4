@@ -16,21 +16,21 @@ class ExpensesController {
         .populate('category', 'description')
         .exec((error, expenses) => {
           if (error) {
-            res.status(500).json({message: 'Error retrieving expenses by query'});
+            return res.status(500).json({message: 'Error retrieving expenses by query'});
             console.log(error);
           }
-          res.status(200).json(expenses);
+          return res.status(200).json(expenses);
         });
     } else {
       expenses.find()
         .populate('category', 'description')
         .exec((error, expenses) => {
         if (error) {
-          res.status(500).json({message: 'Error retrieving expenses'});
+          return res.status(500).json({message: 'Error retrieving expenses'});
           console.log(error);
         }
         
-        res.status(200).json(expenses);
+        return res.status(200).json(expenses);
       });
     }
   };
@@ -42,9 +42,9 @@ class ExpensesController {
       .populate('category', 'description')
       .exec((error, expenses) => { 
       if (error) {
-        res.status(400).send({message: `${error.message} - Expense ID not found`});
+        return res.status(400).send({message: `${error.message} - Expense ID not found`});
       } else {
-        res.status(200).send(expenses);
+        return res.status(200).send(expenses);
       }
     });
   };
@@ -53,8 +53,7 @@ class ExpensesController {
     const {year, month} = req.params;
 
     if (year.length != 4) {
-      res.status(400).json({message: 'year must have 4 digits'});
-      return;
+      return res.status(400).json({message: 'year must have 4 digits'});
     }
     
     expenses.find({
@@ -67,11 +66,11 @@ class ExpensesController {
       })
       .exec((error, expenses) => {
         if (error) {
-          res.status(500).json({message: 'Error retrieving expenses by year and month'});
+          return res.status(500).json({message: 'Error retrieving expenses by year and month'});
           console.log(error);
         }
 
-        res.status(200).json(expenses);
+        return res.status(200).json(expenses);
       });
   };
   
@@ -87,9 +86,9 @@ class ExpensesController {
   
     expense.save((error) => {
       if (error) {
-        res.status(500).send({message: `${error.message} - Error registering expense`});
+        return res.status(500).send({message: `${error.message} - Error registering expense`});
       } else {
-        res.status(201).send(expense.toJSON());
+        return res.status(201).send(expense.toJSON());
       }
     })
   };
@@ -102,18 +101,21 @@ class ExpensesController {
     if ((body && Object.keys(body).length === 0 && Object.getPrototypeOf(body) === Object.prototype) ||
       ('description' in body && !body.description) || 
       ('value' in body && !body.value) || 
-      ('date' in body && !body.date)) {
-      res.status(400).send({message: 'Invalid body'});
-      return;
+      ('date' in body && !body.date) ||
+      ('category' in body && !body.category)) {
+        return res.status(400).send({message: 'Invalid body'});
     }
   
     if (body.description) body.description = body.description.toUpperCase();
   
-    expenses.findByIdAndUpdate(id, {$set: body}, (error) => {
-      if (!error) {
-        res.status(200).send({message: `Expense ${id} sucessfully updated`});
+    expenses.findByIdAndUpdate(id, {$set: body}, (error, model) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).send({message: error.message});
+      } else if (!model) {
+        return res.status(404).send();
       } else {
-        res.status(500).send({message: error.message});
+        return res.status(200).send({message: `Expense ${id} sucessfully updated`});
       }
     });
   };
@@ -121,15 +123,17 @@ class ExpensesController {
   static delete = (req, res) => { 
     const id = req.params.id;
   
-    expenses.findByIdAndDelete(id, (error) => {
-      if (!error) {
-        res.status(200).send({message: `Expense ${id} removed`});
+    expenses.findByIdAndDelete(id, (error, model) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).send({message: error.message});
+      } else if (!model) {
+        return res.status(404).send();
       } else {
-        res.status(500).send({message: error.message});
+        return res.status(200).send({message: `Expense ${id} removed`});
       }
     });
   };
-
 }
 
 export default ExpensesController;
