@@ -18,5 +18,3 @@ Alura Challenge Back-end 4: API para controle de orçamento familiar
 
   * banco de dados MongoDB Atlas: serviço de banco em nuvem
   * back-end com NodeJS
-  * redis ("banco" em memória): para as allowed and block lists (autenticação)
-
