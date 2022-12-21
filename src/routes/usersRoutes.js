@@ -8,7 +8,7 @@ const usersRouter = express.Router();
 usersRouter.get('/users', authMiddlewares.bearerStrategy, UsersController.list);
 usersRouter.get('/users/email/:email', authMiddlewares.bearerStrategy, UsersController.findWithEmail);
 usersRouter.get('/users/id/:id', authMiddlewares.bearerStrategy, UsersController.findWithId);
-usersRouter.post('/users', authMiddlewares.bearerStrategy, UsersController.add);
+usersRouter.post('/users', UsersController.add);
 
 usersRouter.delete('/users/id/:id', authMiddlewares.bearerStrategy, UsersController.delete);
 

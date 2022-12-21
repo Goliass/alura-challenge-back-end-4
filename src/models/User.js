@@ -11,7 +11,8 @@ const schema = new mongoose.Schema(
     id: {type: String},
     name: {type: String, required: true},
     email: {type: String, required: true},
-    passwordHash: {type: String, required: true}
+    passwordHash: {type: String, required: true},
+    loginAuthorized: {type: Boolean, required: true, default:false}
   }
 );
 

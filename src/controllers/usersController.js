@@ -52,6 +52,7 @@ class UsersController {
       let body = req.body;
       body.passwordHash = await authentication.generatePassword(body.password);
   
+      body.loginAuthorized = false;
       let user = new users(body);
       ;
     

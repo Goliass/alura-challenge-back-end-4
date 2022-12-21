@@ -5,11 +5,15 @@ function localStrategy(req, res, next) {
     passport.authenticate(
       'local', { session: false },
       (error, user) => {
-        if (error && new RegExp("InvalidArgumentError").test(error.message)) {
-          return res.status(401).json({ error: error.message });
-        }
-  
         if (error) {
+          if (new RegExp("InvalidArgumentError").test(error.message)) {
+            return res.status(401).json({ error: error.message });
+          }
+
+          if (new RegExp("UnauthorizedUserError").test(error.name)) {
+            return res.status(403).json({ error: error.message });
+          }
+
           return res.status(500).json({ error: error.message });
         }
   
@@ -32,12 +36,19 @@ function bearerStrategy(req, res, next) {
     passport.authenticate(
       'bearer', { session: false },
       (error, user) => {
-
-        if (error && (new RegExp("JsonWebTokenError").test(error.name) || new RegExp("TokenExpiredError").test(error.name))) {
-          return res.status(401).json({ error: error.message });
-        }
-  
         if (error) {
+          if (new RegExp("JsonWebTokenError").test(error.name) || new RegExp("TokenExpiredError").test(error.name)) {
+            return res.status(401).json({ error: error.message });
+          }
+
+          if (new RegExp("InvalidArgumentError").test(error.message)) {
+            return res.status(401).json({ error: error.message });
+          }
+
+          if (new RegExp("UnauthorizedUserError").test(error.name)) {
+            return res.status(403).json({ error: error.message });
+          }
+
           return res.status(500).json({ error: error.message });
         }
   

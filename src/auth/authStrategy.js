@@ -7,7 +7,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 import { findByEmail, findById } from "../controllers/usersController.js";
-import { InvalidArgumentError } from '../errors.js';
+import { InvalidArgumentError, UnauthorizedUserError } from '../errors.js';
 
 function verifyUser(user) {
   try {
@@ -19,14 +19,20 @@ function verifyUser(user) {
   }
 }
 
-async function verifyPassword(senha, senhaHash) {
+async function verifyPassword(password, passwordHash) {
   try {
-    const senhaValida = await bcrypt.compare(senha, senhaHash);
-    if (!senhaValida) {
+    const isPasswordValid = await bcrypt.compare(password, passwordHash);
+    if (!isPasswordValid) {
       throw new InvalidArgumentError('Invalid username or password');
     }
   } catch (error) {
     throw new Error(error);
+  }
+}
+
+function verifyUserLoginAuthorization(user) {
+  if (!user.loginAuthorized) {
+    throw new UnauthorizedUserError('User unauthorized');
   }
 }
 
@@ -50,6 +56,7 @@ const localStrategy = () => {
     
                 verifyUser(user);
                 await verifyPassword(password, user.passwordHash);
+                verifyUserLoginAuthorization(user);
 
                 done(null, user);
               } catch (error) {
@@ -86,6 +93,8 @@ passport.use(
             }
 
             verifyUser(user);
+            verifyUserLoginAuthorization(user);
+
             done(null, user);
           } catch (error) {
             console.log(error);
