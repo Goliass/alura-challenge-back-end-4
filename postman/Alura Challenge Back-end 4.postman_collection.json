@@ -1,0 +1,870 @@
+{
+	"info": {
+		"_postman_id": "8bd0ac3d-1552-4b3f-98d9-48f4d6310c28",
+		"name": "Alura Challenge Back-end 4",
+		"description": "StartFragment\n\nAlura Challenge Back-end 4: API para controle de orçamento familiar (agosto / 2022)\n\n*   Links oficiais do challenge: * [https://www.alura.com.br/challenges/back-end-4/semana-01-implementando-api-rest](https://www.alura.com.br/challenges/back-end-4/semana-01-implementando-api-rest) * [https://trello.com/b/ofAXrAlA/challenge-backend-semana-1](https://trello.com/b/ofAXrAlA/challenge-backend-semana-1) * [https://www.alura.com.br/challenges/back-end-4/semana-02-mudancas-api-novas-funcionalidades](https://www.alura.com.br/challenges/back-end-4/semana-02-mudancas-api-novas-funcionalidades) * [https://trello.com/b/tKBmD8P6/challenge-backend-semana-2](https://trello.com/b/tKBmD8P6/challenge-backend-semana-2) * [https://www.alura.com.br/challenges/back-end-4/semana-03-04-seguranca-deploy-api](https://www.alura.com.br/challenges/back-end-4/semana-03-04-seguranca-deploy-api) * [https://trello.com/b/qFYXUVXJ/challenge-backend-semana-3](https://trello.com/b/qFYXUVXJ/challenge-backend-semana-3)\n*   Tasks (cópia do trello do Challenge): * [https://trello.com/b/LL2pc08f/challenge-backend-alura-semana-1](https://trello.com/b/LL2pc08f/challenge-backend-alura-semana-1) * [https://trello.com/b/RK6N4fBh/challenge-backend-alura-semana-2](https://trello.com/b/RK6N4fBh/challenge-backend-alura-semana-2) * [https://trello.com/b/dLfm1W5j/challenge-backend-alura-semana-3](https://trello.com/b/dLfm1W5j/challenge-backend-alura-semana-3)\n*   ferramentas / tecnologias:\n    *   banco de dados MongoDB Atlas: serviço de banco em nuvem\n\nEndFragment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15883088"
+	},
+	"item": [
+		{
+			"name": "login",
+			"item": [
+				{
+					"name": "Login with VALID pass",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202, 204]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response headers has authorization header\", function(){\r",
+									"    pm.response.to.have.header('authorization');\r",
+									"})\r",
+									"\r",
+									"pm.environment.set(\"jsonWebToken\", pm.response.headers.get(\"authorization\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"email@domain.com\",\r\n    \"password\": \"{{userPassword}}\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"login"
+							]
+						},
+						"description": "sugestões de body para testar o campo category:\n\n``` json\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": \"\"\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": null\n}\n\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "Login with INVALID pass",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"email@domain.com\",\r\n    \"password\": \"123456\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"login"
+							]
+						},
+						"description": "sugestões de body para testar o campo category:\n\n``` json\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": \"\"\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": null\n}\n\n```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "expenses",
+			"item": [
+				{
+					"name": "List expenses",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/expenses",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"expenses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find expense by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/expenses/62f997afc37936589cb97fbd",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"expenses",
+								"62f997afc37936589cb97fbd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find expenses by description",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/expenses?description=nteRNET",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"expenses"
+							],
+							"query": [
+								{
+									"key": "description",
+									"value": "nteRNET"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find expenses by year and month",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/expenses/2022/08",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"expenses",
+								"2022",
+								"08"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add expense",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"INGRESSO IRON1\",\r\n    \"value\": 250,\r\n    \"date\": \"2023-09-15\",\r\n    \"category\": \"630434734cbef5fa4fa5799e\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/expenses",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"expenses"
+							]
+						},
+						"description": "sugestões de body para testar o campo category:\n\n``` json\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": \"\"\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": null\n}\n\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "Update expense",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"ingresso iron maiden 2023\",\r\n    \"value\": 399,\r\n    \"date\": \"2023-09-16\",\r\n    \"category\": \"6304345a4cbef5fa4fa57996\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/expenses/639a5979fe4caf6763f048c4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"expenses",
+								"639a5979fe4caf6763f048c4"
+							]
+						},
+						"description": "sugestões de body para testar o campo category:\n\n``` json\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": \"\"\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": null\n}\n\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete expense by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3001/expenses/639a5979fe4caf6763f048c4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"expenses",
+								"639a5979fe4caf6763f048c4"
+							]
+						},
+						"description": "sugestões de body para testar o campo category:\n\n``` json\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": \"\"\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": null\n}\n\n```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "expensesCategories",
+			"item": [
+				{
+					"name": "List expenses categories",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/expensesCategories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"expensesCategories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add expense category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"description\": \"viagem\"}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/expensesCategories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"expensesCategories"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "receipts",
+			"item": [
+				{
+					"name": "List receipts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/receipts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"receipts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find receipt by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/receipts/6306c9e58405059e6ece7083",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"receipts",
+								"6306c9e58405059e6ece7083"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find receipts by description",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/receipts?description=aliM",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"receipts"
+							],
+							"query": [
+								{
+									"key": "description",
+									"value": "aliM"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find receipts by year and month",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/receipts/2022/09",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"receipts",
+								"2022",
+								"09"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add receipt",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"descricao\",\r\n    \"value\": 600,\r\n    \"date\": \"2022-12-10\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/receipts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"receipts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update receipt",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"descricao\",\r\n    \"value\": 800,\r\n    \"date\": \"2022-12-10\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/receipts/639a5e03fe4caf6763f048f9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"receipts",
+								"639a5e03fe4caf6763f048f9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete receipt by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3001/receipts/639a5e03fe4caf6763f048f9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"receipts",
+								"639a5e03fe4caf6763f048f9"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "List users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find a user by Email",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/users/email/email@domain.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"users",
+								"email",
+								"email@domain.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find a user by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/users/id/6397e8386241561f0857ad68",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"users",
+								"id",
+								"6397e8386241561f0857ad68"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"nome\",\r\n    \"email\": \"email@domain.com\",\r\n    \"password\": \"{{userPassword}}\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3001/users/id/639a7a07fe4caf6763f0492f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"users",
+								"id",
+								"639a7a07fe4caf6763f0492f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "extracts",
+			"item": [
+				{
+					"name": "Extract by year and month",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/extract/2022/09",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"extract",
+								"2022",
+								"09"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
