@@ -19,5 +19,6 @@ Alura Challenge Back-end 4: API para controle de orçamento familiar
 * Principais "ferramentas" / tecnologias utilizadas:
 
   * banco de dados MongoDB Atlas: serviço de banco em nuvem
-  * back-end com NodeJS / express / mongoose
+  * back-end com NodeJS / expressjs / mongoose
   * execução das rotas com Postman
+  * autenticação e afins com bcrypt, passport e jsonwebtoken
