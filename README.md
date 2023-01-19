@@ -1,5 +1,7 @@
 Alura Challenge Back-end 4: API para controle de orçamento familiar
 
+Documentação com os passos para executar a API localmente/localhost (no seu computador)
+
 * Links oficiais do challenge:
   * https://www.alura.com.br/challenges/back-end-4/semana-01-implementando-api-rest
   * https://trello.com/b/ofAXrAlA/challenge-backend-semana-1
@@ -17,5 +19,5 @@ Alura Challenge Back-end 4: API para controle de orçamento familiar
 * ferramentas / tecnologias:
 
   * banco de dados MongoDB Atlas: serviço de banco em nuvem
-  * back-end com NodeJS / Express
+  * back-end com NodeJS / express / mongoose
   * execução das rotas com Postman
