@@ -22,3 +22,4 @@ Alura Challenge Back-end 4: API para controle de orçamento familiar
   * back-end com NodeJS / expressjs / mongoose
   * execução das rotas com Postman
   * autenticação e afins com bcrypt, passport e jsonwebtoken
+  * manipulação de variáveis de ambiente com dotenv
