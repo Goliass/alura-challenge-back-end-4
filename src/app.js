@@ -11,6 +11,8 @@ db.once("open", () => {
 import { localStrategy } from "./auth/authStrategy.js";
 localStrategy();
 
+import * as jwtBlacklistRedisClient from '../redis/jwtBlacklist.js';
+
 const app = express();
 
 app.use(express.json());
