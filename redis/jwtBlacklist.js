@@ -1,5 +1,8 @@
-import * as redis from 'redis';
+import { createClient } from 'redis';
 
-const jwtBlacklistRedisClient = redis.createClient({ prefix: 'jwt-blacklist:' });
+const jwtBlacklistRedisClient = createClient({ prefix: 'jwt-blacklist:' });
+jwtBlacklistRedisClient.on('error', error => console.log('Redis Client Error', error));
+
+await jwtBlacklistRedisClient.connect();
 
 export { jwtBlacklistRedisClient };
