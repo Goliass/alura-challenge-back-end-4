@@ -8,6 +8,7 @@ dotenv.config();
 
 import { findByEmail, findById } from "../controllers/usersController.js";
 import { InvalidArgumentError, UnauthorizedUserError } from '../errors.js';
+import * as manageJwtBlacklist from '../../redis/manageJwtBlacklist.js';
 
 function verifyUser(user) {
   try {
@@ -33,6 +34,14 @@ async function verifyPassword(password, passwordHash) {
 function verifyUserLoginAuthorization(user) {
   if (!user.loginAuthorized) {
     throw new UnauthorizedUserError('User unauthorized');
+  }
+}
+
+async function verifyTokenExpiredByLogout(token) {
+  const tokenExpired = await manageJwtBlacklist.hasToken(token);
+
+  if (tokenExpired) {
+    throw new jsonwebtoken.JsonWebTokenError('Token expired by logout');
   }
 }
 
@@ -83,6 +92,8 @@ passport.use(
   new BearerStrategy(
     async (token, done) => {
       try {
+        await verifyTokenExpiredByLogout(token);
+
         const payload = jsonwebtoken.verify(token, process.env.jwtKey);
 
         findById(payload.id, async (error, user) => {
@@ -95,7 +106,7 @@ passport.use(
             verifyUser(user);
             verifyUserLoginAuthorization(user);
 
-            done(null, user);
+            done(null, user, { token: token });
           } catch (error) {
             console.log(error);
             done(error);

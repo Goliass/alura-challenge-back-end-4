@@ -1,6 +1,8 @@
 import users from "../models/User.js";
 import * as authentication from "../auth/authentication.js";
 
+import * as manageJwtBlacklist from '../../redis/manageJwtBlacklist.js';
+
 class UsersController {
 
   static list = (req, res) => { 
@@ -99,6 +101,17 @@ class UsersController {
     } catch (error) {
       console.log(error);
       return res.status(500).send({message: error.message});
+    }
+  }
+
+  static logout = async (req, res) => {
+    try {
+      const token = req.token;
+      await manageJwtBlacklist.add(token);
+      
+      return res.status(204).send();
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
     }
   }
 }
