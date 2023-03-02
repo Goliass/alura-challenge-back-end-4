@@ -35,7 +35,7 @@ function bearerStrategy(req, res, next) {
   try {
     passport.authenticate(
       'bearer', { session: false },
-      (error, user) => {
+      (error, user, info) => {
         if (error) {
           if (new RegExp("JsonWebTokenError").test(error.name) || new RegExp("TokenExpiredError").test(error.name)) {
             return res.status(401).json({ error: error.message });
@@ -57,6 +57,8 @@ function bearerStrategy(req, res, next) {
         }
   
         req.user = user;
+        req.token = info.token;
+
         return next();
       }
     )(req, res, next);

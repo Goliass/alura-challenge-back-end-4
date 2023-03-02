@@ -16,4 +16,6 @@ usersRouter.post('/login',
   authMiddlewares.localStrategy,
   UsersController.login);
 
+usersRouter.get('/logout', authMiddlewares.bearerStrategy, UsersController.logout);
+
 export default usersRouter;
