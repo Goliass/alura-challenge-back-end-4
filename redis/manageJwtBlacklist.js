@@ -1,4 +1,4 @@
-import * as jwtBlacklistRedisClient from './jwtBlacklist.js';
+import { jwtBlacklistRedisClient } from './jwtBlacklist.js';
 
 import jsonwebtoken from 'jsonwebtoken';
 import { createHash } from 'crypto';
@@ -13,15 +13,15 @@ async function add(token) {
   const expirationDate = jsonwebtoken.decode(token).exp;
   const tokenHash = generateTokenHash(token);
 
-  await jwtBlacklistRedisClient.set(tokenHash, '');
-  jwtBlacklistRedisClient.expireat(tokenHash, expirationDate);
+  await jwtBlacklistRedisClient.set(tokenHash, 'N/A');
+  jwtBlacklistRedisClient.expireAt(tokenHash, expirationDate);
 }
 
 async function hasToken(token) {
   const tokenHash = generateTokenHash(token);
   const result = await jwtBlacklistRedisClient.get(tokenHash);
 
-  return result === 1;
+  return result;
 }
 
 export {
