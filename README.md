@@ -24,3 +24,4 @@ Alura Challenge Back-end 4: API para controle de orçamento familiar
   * autenticação e afins com bcrypt, passport e jsonwebtoken
   * manipulação de variáveis de ambiente com dotenv
   * deploy / API on-line com / no [render](https://render.com/)
+  * banco de dados em memória Redis (necessário para a rota de logout)
