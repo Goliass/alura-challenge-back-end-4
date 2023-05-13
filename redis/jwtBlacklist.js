@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv';
+
 import { createClient } from 'redis';
 import { shutdownService } from '../src/errors.js';
 
