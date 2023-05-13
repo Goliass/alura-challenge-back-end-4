@@ -1,14 +1,14 @@
 {
 	"info": {
-		"_postman_id": "8bd0ac3d-1552-4b3f-98d9-48f4d6310c28",
-		"name": "Alura Challenge Back-end 4",
-		"description": "StartFragment\n\nAlura Challenge Back-end 4: API para controle de orçamento familiar (agosto / 2022)\n\n*   Links oficiais do challenge: * [https://www.alura.com.br/challenges/back-end-4/semana-01-implementando-api-rest](https://www.alura.com.br/challenges/back-end-4/semana-01-implementando-api-rest) * [https://trello.com/b/ofAXrAlA/challenge-backend-semana-1](https://trello.com/b/ofAXrAlA/challenge-backend-semana-1) * [https://www.alura.com.br/challenges/back-end-4/semana-02-mudancas-api-novas-funcionalidades](https://www.alura.com.br/challenges/back-end-4/semana-02-mudancas-api-novas-funcionalidades) * [https://trello.com/b/tKBmD8P6/challenge-backend-semana-2](https://trello.com/b/tKBmD8P6/challenge-backend-semana-2) * [https://www.alura.com.br/challenges/back-end-4/semana-03-04-seguranca-deploy-api](https://www.alura.com.br/challenges/back-end-4/semana-03-04-seguranca-deploy-api) * [https://trello.com/b/qFYXUVXJ/challenge-backend-semana-3](https://trello.com/b/qFYXUVXJ/challenge-backend-semana-3)\n*   Tasks (cópia do trello do Challenge): * [https://trello.com/b/LL2pc08f/challenge-backend-alura-semana-1](https://trello.com/b/LL2pc08f/challenge-backend-alura-semana-1) * [https://trello.com/b/RK6N4fBh/challenge-backend-alura-semana-2](https://trello.com/b/RK6N4fBh/challenge-backend-alura-semana-2) * [https://trello.com/b/dLfm1W5j/challenge-backend-alura-semana-3](https://trello.com/b/dLfm1W5j/challenge-backend-alura-semana-3)\n*   ferramentas / tecnologias:\n    *   banco de dados MongoDB Atlas: serviço de banco em nuvem\n\nEndFragment",
+		"_postman_id": "817ef8f2-2d48-4073-8536-1518f521debc",
+		"name": "Alura Challenge Back-end 4-doc",
+		"description": "StartFragment\n\nAlura Challenge Back-end 4: API para controle de orçamento familiar (agosto / 2022)\n\n- Links oficiais do challenge: \\* [https://www.alura.com.br/challenges/back-end-4/semana-01-implementando-api-rest](https://www.alura.com.br/challenges/back-end-4/semana-01-implementando-api-rest) \\* [https://trello.com/b/ofAXrAlA/challenge-backend-semana-1](https://trello.com/b/ofAXrAlA/challenge-backend-semana-1) \\* [https://www.alura.com.br/challenges/back-end-4/semana-02-mudancas-api-novas-funcionalidades](https://www.alura.com.br/challenges/back-end-4/semana-02-mudancas-api-novas-funcionalidades) \\* [https://trello.com/b/tKBmD8P6/challenge-backend-semana-2](https://trello.com/b/tKBmD8P6/challenge-backend-semana-2) \\* [https://www.alura.com.br/challenges/back-end-4/semana-03-04-seguranca-deploy-api](https://www.alura.com.br/challenges/back-end-4/semana-03-04-seguranca-deploy-api) \\* [https://trello.com/b/qFYXUVXJ/challenge-backend-semana-3](https://trello.com/b/qFYXUVXJ/challenge-backend-semana-3)\n- Tasks (cópia do trello do Challenge): \\* [https://trello.com/b/LL2pc08f/challenge-backend-alura-semana-1](https://trello.com/b/LL2pc08f/challenge-backend-alura-semana-1) \\* [https://trello.com/b/RK6N4fBh/challenge-backend-alura-semana-2](https://trello.com/b/RK6N4fBh/challenge-backend-alura-semana-2) \\* [https://trello.com/b/dLfm1W5j/challenge-backend-alura-semana-3](https://trello.com/b/dLfm1W5j/challenge-backend-alura-semana-3)\n- ferramentas / tecnologias:\n    - banco de dados MongoDB Atlas: serviço de banco em nuvem\n- requisições + variáveis de ambiente:\n    - ao fazer requisições para servidor \"local\", considerar na environment variable \"host\" o host:porta, ex: [http://localhost:3030](http://localhost:3030)\n    - ao fazer requisiçoes para servidor externo (online / cloud), testar requisição com e sem a porta, para ver qual se aplica, ex sem a porta: [https://family-budget-vwpp.onrender.com](https://family-budget-vwpp.onrender.com)\n\nEndFragment",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "15883088"
 	},
 	"item": [
 		{
-			"name": "login",
+			"name": "login / logout",
 			"item": [
 				{
 					"name": "Login with VALID pass",
@@ -44,12 +44,10 @@
 							"raw": "{\r\n    \"email\": \"email@domain.com\",\r\n    \"password\": \"{{userPassword}}\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3001/login",
-							"protocol": "http",
+							"raw": "{{host}}/login",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"login"
 							]
@@ -60,6 +58,25 @@
 				},
 				{
 					"name": "Login with INVALID pass",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202, 204]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response headers has authorization header\", function(){\r",
+									"    pm.response.to.have.header('authorization');\r",
+									"})\r",
+									"\r",
+									"pm.environment.set(\"jsonWebToken\", pm.response.headers.get(\"authorization\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -70,17 +87,95 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"email@domain.com\",\r\n    \"password\": \"123456\"\r\n}"
+							"raw": "{\r\n    \"email\": \"email@domain.com\",\r\n    \"password\": \"123\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3001/login",
-							"protocol": "http",
+							"raw": "{{host}}/login",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"login"
+							]
+						},
+						"description": "sugestões de body para testar o campo category:\n\n``` json\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": \"\"\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": null\n}\n\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout with VALID token",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/logout",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"logout"
+							]
+						},
+						"description": "StartFragmentAp asdfasdfEndFrAaasssasdf\n\nApós a execução desta requisição, e excetuando as reqs de login, add user e \"/\", na execução das demais requisições a resposta correta deverá conter o seguinte status e body, respectivamente:\n\n401 Unauthorized\n\n{\"error\": \"Token expired by logout\"}"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout with INVALID token",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYzYxOWFiN2Y4MTBiNmJmMzkzZjdjNyIsImlhdCI6MTY3NzcxODE4OCwiZXhwIjoxNjc3NzE4MjA4fQ.LYCwWGTv3ja0nP_OoQArNVgJWtOFnFDTY5eAc1_AR--",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/logout",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"logout"
 							]
 						},
 						"description": "sugestões de body para testar o campo category:\n\n``` json\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": \"\"\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": null\n}\n\n```"
@@ -108,12 +203,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/expenses",
-							"protocol": "http",
+							"raw": "{{host}}/expenses",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"expenses"
 							]
@@ -137,15 +230,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/expenses/62f997afc37936589cb97fbd",
-							"protocol": "http",
+							"raw": "{{host}}/expenses/64225980758b5c675d398cae",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"expenses",
-								"62f997afc37936589cb97fbd"
+								"64225980758b5c675d398cae"
 							]
 						}
 					},
@@ -167,19 +258,17 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/expenses?description=nteRNET",
-							"protocol": "http",
+							"raw": "{{host}}/expenses?description=nib",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"expenses"
 							],
 							"query": [
 								{
 									"key": "description",
-									"value": "nteRNET"
+									"value": "nib"
 								}
 							]
 						}
@@ -202,16 +291,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/expenses/2022/08",
-							"protocol": "http",
+							"raw": "{{host}}/expenses/2023/03",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"expenses",
-								"2022",
-								"08"
+								"2023",
+								"03"
 							]
 						}
 					},
@@ -239,15 +326,13 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"INGRESSO IRON1\",\r\n    \"value\": 250,\r\n    \"date\": \"2023-09-15\",\r\n    \"category\": \"630434734cbef5fa4fa5799e\"\r\n}"
+							"raw": "{\r\n    \"description\": \"uber\",\r\n    \"value\": 100,\r\n    \"date\": \"2023-03-03\",\r\n    \"category\": \"642258d46eab27c461f14e30\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3001/expenses",
-							"protocol": "http",
+							"raw": "{{host}}/expenses",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"expenses"
 							]
@@ -278,18 +363,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"ingresso iron maiden 2023\",\r\n    \"value\": 399,\r\n    \"date\": \"2023-09-16\",\r\n    \"category\": \"6304345a4cbef5fa4fa57996\"\r\n}"
+							"raw": "{\r\n    \"description\": \"uber\",\r\n    \"value\": 640,\r\n    \"date\": \"2023-09-16\",\r\n    \"category\": \"6304345a4cbef5fa4fa57996\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3001/expenses/639a5979fe4caf6763f048c4",
-							"protocol": "http",
+							"raw": "{{host}}/expenses/642259196eab27c461f14e3c",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"expenses",
-								"639a5979fe4caf6763f048c4"
+								"642259196eab27c461f14e3c"
 							]
 						},
 						"description": "sugestões de body para testar o campo category:\n\n``` json\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": \"\"\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": null\n}\n\n```"
@@ -321,15 +404,13 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:3001/expenses/639a5979fe4caf6763f048c4",
-							"protocol": "http",
+							"raw": "{{host}}/expenses/64225980758b5c675d398cae",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"expenses",
-								"639a5979fe4caf6763f048c4"
+								"64225980758b5c675d398cae"
 							]
 						},
 						"description": "sugestões de body para testar o campo category:\n\n``` json\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": \"\"\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": null\n}\n\n```"
@@ -357,12 +438,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/expensesCategories",
-							"protocol": "http",
+							"raw": "{{host}}/expensesCategories",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"expensesCategories"
 							]
@@ -392,15 +471,13 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"description\": \"viagem\"}"
+							"raw": "{\"description\": \"transporte\"}"
 						},
 						"url": {
-							"raw": "http://localhost:3001/expensesCategories",
-							"protocol": "http",
+							"raw": "{{host}}/expensesCategories",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"expensesCategories"
 							]
@@ -429,12 +506,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/receipts",
-							"protocol": "http",
+							"raw": "{{host}}/receipts",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"receipts"
 							]
@@ -458,15 +533,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/receipts/6306c9e58405059e6ece7083",
-							"protocol": "http",
+							"raw": "{{host}}/receipts/63c61a5f7f810b6bf393f7f4",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"receipts",
-								"6306c9e58405059e6ece7083"
+								"63c61a5f7f810b6bf393f7f4"
 							]
 						}
 					},
@@ -488,19 +561,17 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/receipts?description=aliM",
-							"protocol": "http",
+							"raw": "{{host}}/receipts?description=cri",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"receipts"
 							],
 							"query": [
 								{
 									"key": "description",
-									"value": "aliM"
+									"value": "cri"
 								}
 							]
 						}
@@ -523,16 +594,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/receipts/2022/09",
-							"protocol": "http",
+							"raw": "{{host}}/receipts/2022/12",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"receipts",
 								"2022",
-								"09"
+								"12"
 							]
 						}
 					},
@@ -560,15 +629,13 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"descricao\",\r\n    \"value\": 600,\r\n    \"date\": \"2022-12-10\"\r\n}"
+							"raw": "{\r\n    \"description\": \"job\",\r\n    \"value\": 1000,\r\n    \"date\": \"2022-03-10\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3001/receipts",
-							"protocol": "http",
+							"raw": "{{host}}/receipts",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"receipts"
 							]
@@ -598,18 +665,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"descricao\",\r\n    \"value\": 800,\r\n    \"date\": \"2022-12-10\"\r\n}"
+							"raw": "{\r\n    \"description\": \"job\",\r\n    \"value\": 1500,\r\n    \"date\": \"2023-03-10\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3001/receipts/639a5e03fe4caf6763f048f9",
-							"protocol": "http",
+							"raw": "{{host}}/receipts/64225a34758b5c675d398cc3",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"receipts",
-								"639a5e03fe4caf6763f048f9"
+								"64225a34758b5c675d398cc3"
 							]
 						}
 					},
@@ -640,15 +705,13 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:3001/receipts/639a5e03fe4caf6763f048f9",
-							"protocol": "http",
+							"raw": "{{host}}/receipts/64225a61758b5c675d398cc8",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"receipts",
-								"639a5e03fe4caf6763f048f9"
+								"64225a61758b5c675d398cc8"
 							]
 						}
 					},
@@ -675,12 +738,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/users",
-							"protocol": "http",
+							"raw": "{{host}}/users",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"users"
 							]
@@ -704,12 +765,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/users/email/email@domain.com",
-							"protocol": "http",
+							"raw": "{{host}}/users/email/email@domain.com",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"users",
 								"email",
@@ -735,16 +794,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/users/id/6397e8386241561f0857ad68",
-							"protocol": "http",
+							"raw": "{{host}}/users/id/6422588b6eab27c461f14e29",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"users",
 								"id",
-								"6397e8386241561f0857ad68"
+								"6422588b6eab27c461f14e29"
 							]
 						}
 					},
@@ -772,15 +829,13 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"nome\",\r\n    \"email\": \"email@domain.com\",\r\n    \"password\": \"{{userPassword}}\"\r\n}"
+							"raw": "{\r\n    \"name\": \"user\",\r\n    \"email\": \"email@domain.com\",\r\n    \"password\": \"{{userPassword}}\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3001/users",
-							"protocol": "http",
+							"raw": "{{host}}/users",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"users"
 							]
@@ -813,16 +868,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:3001/users/id/639a7a07fe4caf6763f0492f",
-							"protocol": "http",
+							"raw": "{{host}}/users/id/641bc253f78628c5d37ff1eb",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"users",
 								"id",
-								"639a7a07fe4caf6763f0492f"
+								"641bc253f78628c5d37ff1eb"
 							]
 						}
 					},
@@ -849,22 +902,50 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/extract/2022/09",
-							"protocol": "http",
+							"raw": "{{host}}/extract/2023/03",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "3001",
 							"path": [
 								"extract",
-								"2022",
-								"09"
+								"2023",
+								"03"
 							]
 						}
 					},
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"email@domain.com\",\r\n    \"password\": \"123456\"\r\n}"
+				},
+				"url": {
+					"raw": "{{host}}/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						""
+					]
+				},
+				"description": "sugestões de body para testar o campo category:\n\n``` json\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": \"\"\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": null\n}\n\n```"
+			},
+			"response": []
 		}
 	]
 }

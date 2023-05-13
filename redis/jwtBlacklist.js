@@ -1,7 +1,16 @@
 import * as dotenv from 'dotenv';
-dotenv.config();
 
 import { createClient } from 'redis';
+import { shutdownService } from '../src/errors.js';
+
+process.on('uncaughtException', (error) => {
+  console.log(`Uncaught exception: ${error}`);
+
+  shutdownService(error);
+});
+
+dotenv.config();
+let countRedisServerErrors = 0;
 
 let creatClientOptions = {
   prefix: 'jwt-blacklist:'
@@ -16,9 +25,24 @@ if (process.env.REDIS_PASS) {
   }
 }
 
+creatClientOptions.disableOfflineQueue = true;
+
 const jwtBlacklistRedisClient = createClient(creatClientOptions);
 
-jwtBlacklistRedisClient.on('error', error => console.log('In-memory database connection error', error));
+jwtBlacklistRedisClient.on('ready', () => {
+  countRedisServerErrors = 0;
+});
+
+jwtBlacklistRedisClient.on('error', error => {
+  countRedisServerErrors++;
+
+  const errorMessage = `In-memory database connection error: ${JSON.stringify(error)}`;
+  console.log(errorMessage);
+  
+  if (countRedisServerErrors >= process.env.REDIS_MAX_CONNECTION_ATTEMPTS) { // attempts before throwing
+    shutdownService(errorMessage);
+  }
+});
 
 await jwtBlacklistRedisClient.connect();
 console.log("In-memory database connection succeed");
