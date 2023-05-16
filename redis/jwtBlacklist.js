@@ -17,7 +17,7 @@ let creatClientOptions = {
 }
 
 if (process.env.REDIS_PASS) { 
-  creatClientOptions.url = `redis://default:${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
+  creatClientOptions.url = `redis://${process.env.REDIS_USER}:${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
 } else { // localhost
   creatClientOptions.socket = {
     host: process.env.REDIS_HOST,
