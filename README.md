@@ -25,3 +25,7 @@ Alura Challenge Back-end 4: API para controle de orçamento familiar
   * manipulação de variáveis de ambiente com dotenv
   * deploy / API on-line com / no [render](https://render.com/)
   * banco de dados em memória Redis (necessário para a rota de logout)
+
+* Diagrama (requisições)  
+  ![](./doc/family-budget-api-diagram.drawio.png)
+  * representação geral de algumas requisições. **Atenção**: pode não refletir o estado atual do código/API.
