@@ -5,14 +5,30 @@ import { UsersController } from "../controllers/usersController.js";
 
 const usersRouter = express.Router();
 
-usersRouter.get('/users', authMiddlewares.bearerStrategy, UsersController.list);
-usersRouter.get('/users/email/:email', authMiddlewares.bearerStrategy, UsersController.findWithEmail);
-usersRouter.get('/users/id/:id', authMiddlewares.bearerStrategy, UsersController.findWithId);
-usersRouter.post('/users', UsersController.add);
+import { reqParams, paramsValidation } from "../validators/usersValidator.js";
 
-usersRouter.delete('/users/id/:id', authMiddlewares.bearerStrategy, UsersController.delete);
+usersRouter.get('/users', authMiddlewares.bearerStrategy, UsersController.list);
+
+usersRouter.get('/users/email/:email', 
+  authMiddlewares.bearerStrategy, 
+  paramsValidation(reqParams.email),
+  UsersController.findWithEmail);
+
+usersRouter.get('/users/id/:id', authMiddlewares.bearerStrategy, 
+  paramsValidation(reqParams.id), 
+  UsersController.findWithId);
+
+usersRouter.post('/users', 
+  paramsValidation(reqParams.name, reqParams.email, reqParams.password),
+  UsersController.add);
+
+usersRouter.delete('/users/id/:id', 
+authMiddlewares.bearerStrategy, 
+paramsValidation(reqParams.id),
+UsersController.delete);
 
 usersRouter.post('/login', 
+  paramsValidation(reqParams.email, reqParams.password),
   authMiddlewares.localStrategy,
   UsersController.login);
 
