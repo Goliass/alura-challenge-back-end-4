@@ -75,11 +75,6 @@ class UsersController {
   
   static delete = (req, res) => {
     const id = req.params.id;
-
-    const idPattern = /^[0-9a-f]{24}$/i;
-    if (!id.match(idPattern)) {
-      return res.status(400).json({message: `id doesn't match the patern ${idPattern}`});
-    }
     
     users.findByIdAndDelete(id, (error, model) => {
       if (error) {
