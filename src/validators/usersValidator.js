@@ -57,7 +57,7 @@ function paramsValidation(...paramNames) {
                 check(reqParams.id)
                   .trim()
                   .isLength({ min: idLength, max: idLength }).withMessage(`It must have ${idLength} characters`)
-                  .isHexadecimal().withMessage('Only alphanumeric characters allowed')
+                  .isHexadecimal().withMessage('Only hexadecimal characters allowed')
                   .escape()
               )
               break;
