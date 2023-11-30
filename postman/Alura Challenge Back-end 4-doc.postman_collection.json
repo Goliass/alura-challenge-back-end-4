@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "817ef8f2-2d48-4073-8536-1518f521debc",
+		"_postman_id": "8ab3b6ef-2a2c-42bd-820a-56ce7078c1a7",
 		"name": "Alura Challenge Back-end 4-doc",
 		"description": "StartFragment\n\nAlura Challenge Back-end 4: API para controle de orçamento familiar (agosto / 2022)\n\n- Links oficiais do challenge: \\* [https://www.alura.com.br/challenges/back-end-4/semana-01-implementando-api-rest](https://www.alura.com.br/challenges/back-end-4/semana-01-implementando-api-rest) \\* [https://trello.com/b/ofAXrAlA/challenge-backend-semana-1](https://trello.com/b/ofAXrAlA/challenge-backend-semana-1) \\* [https://www.alura.com.br/challenges/back-end-4/semana-02-mudancas-api-novas-funcionalidades](https://www.alura.com.br/challenges/back-end-4/semana-02-mudancas-api-novas-funcionalidades) \\* [https://trello.com/b/tKBmD8P6/challenge-backend-semana-2](https://trello.com/b/tKBmD8P6/challenge-backend-semana-2) \\* [https://www.alura.com.br/challenges/back-end-4/semana-03-04-seguranca-deploy-api](https://www.alura.com.br/challenges/back-end-4/semana-03-04-seguranca-deploy-api) \\* [https://trello.com/b/qFYXUVXJ/challenge-backend-semana-3](https://trello.com/b/qFYXUVXJ/challenge-backend-semana-3)\n- Tasks (cópia do trello do Challenge): \\* [https://trello.com/b/LL2pc08f/challenge-backend-alura-semana-1](https://trello.com/b/LL2pc08f/challenge-backend-alura-semana-1) \\* [https://trello.com/b/RK6N4fBh/challenge-backend-alura-semana-2](https://trello.com/b/RK6N4fBh/challenge-backend-alura-semana-2) \\* [https://trello.com/b/dLfm1W5j/challenge-backend-alura-semana-3](https://trello.com/b/dLfm1W5j/challenge-backend-alura-semana-3)\n- ferramentas / tecnologias:\n    - banco de dados MongoDB Atlas: serviço de banco em nuvem\n- requisições + variáveis de ambiente:\n    - ao fazer requisições para servidor \"local\", considerar na environment variable \"host\" o host:porta, ex: [http://localhost:3030](http://localhost:3030)\n    - ao fazer requisiçoes para servidor externo (online / cloud), testar requisição com e sem a porta, para ver qual se aplica, ex sem a porta: [https://family-budget-vwpp.onrender.com](https://family-budget-vwpp.onrender.com)\n\nEndFragment",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "login / logout",
+			"name": "login",
 			"item": [
 				{
 					"name": "Login with VALID pass",
@@ -41,53 +41,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"email@domain.com\",\r\n    \"password\": \"{{userPassword}}\"\r\n}"
-						},
-						"url": {
-							"raw": "{{host}}/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"login"
-							]
-						},
-						"description": "sugestões de body para testar o campo category:\n\n``` json\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": \"\"\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": null\n}\n\n```"
-					},
-					"response": []
-				},
-				{
-					"name": "Login with INVALID pass",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Successful POST request\", function () {\r",
-									"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202, 204]);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Response headers has authorization header\", function(){\r",
-									"    pm.response.to.have.header('authorization');\r",
-									"})\r",
-									"\r",
-									"pm.environment.set(\"jsonWebToken\", pm.response.headers.get(\"authorization\"));"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"email@domain.com\",\r\n    \"password\": \"123\"\r\n}"
+							"raw": "{\r\n    \"email\": \"user@sqn.com\",\r\n    \"password\": \"{{userPassword}}\"\r\n}"
 						},
 						"url": {
 							"raw": "{{host}}/login",
@@ -139,6 +93,52 @@
 							]
 						},
 						"description": "StartFragmentAp asdfasdfEndFrAaasssasdf\n\nApós a execução desta requisição, e excetuando as reqs de login, add user e \"/\", na execução das demais requisições a resposta correta deverá conter o seguinte status e body, respectivamente:\n\n401 Unauthorized\n\n{\"error\": \"Token expired by logout\"}"
+					},
+					"response": []
+				},
+				{
+					"name": "Login with INVALID pass",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202, 204]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response headers has authorization header\", function(){\r",
+									"    pm.response.to.have.header('authorization');\r",
+									"})\r",
+									"\r",
+									"pm.environment.set(\"jsonWebToken\", pm.response.headers.get(\"authorization\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"email@domain.com\",\r\n    \"password\": \"123\"\r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"login"
+							]
+						},
+						"description": "sugestões de body para testar o campo category:\n\n``` json\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": \"\"\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": null\n}\n\n```"
 					},
 					"response": []
 				},
@@ -215,34 +215,6 @@
 					"response": []
 				},
 				{
-					"name": "Find expense by Id",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jsonWebToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/expenses/64225980758b5c675d398cae",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"expenses",
-								"64225980758b5c675d398cae"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Find expenses by description",
 					"request": {
 						"auth": {
@@ -258,18 +230,42 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/expenses?description=nib",
+							"raw": "{{host}}/expenses/description/ub",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"expenses"
-							],
-							"query": [
+								"expenses",
+								"description",
+								"ub"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find expense by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
 								{
-									"key": "description",
-									"value": "nib"
+									"key": "token",
+									"value": "{{jsonWebToken}}",
+									"type": "string"
 								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/expenses/64c46c0582786540eb8cfb6d",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"expenses",
+								"64c46c0582786540eb8cfb6d"
 							]
 						}
 					},
@@ -326,7 +322,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"uber\",\r\n    \"value\": 100,\r\n    \"date\": \"2023-03-03\",\r\n    \"category\": \"642258d46eab27c461f14e30\"\r\n}"
+							"raw": "{\r\n    \"description\": \"bus\",\r\n    \"value\": 15,\r\n    \"date\": \"2023-11-04\",\r\n    \"category\": \"642258d46eab27c461f14e30\"\r\n}"
 						},
 						"url": {
 							"raw": "{{host}}/expenses",
@@ -363,16 +359,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"uber\",\r\n    \"value\": 640,\r\n    \"date\": \"2023-09-16\",\r\n    \"category\": \"6304345a4cbef5fa4fa57996\"\r\n}"
+							"raw": "{\r\n    \"description\": \"bus\",\r\n    \"value\": 20,\r\n    \"date\": \"2023-11-12\",\r\n    \"category\": \"6304345a4cbef5fa4fa57996\"\r\n}"
 						},
 						"url": {
-							"raw": "{{host}}/expenses/642259196eab27c461f14e3c",
+							"raw": "{{host}}/expenses/656555d1fc6c42f2c90121a5",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"expenses",
-								"642259196eab27c461f14e3c"
+								"656555d1fc6c42f2c90121a5"
 							]
 						},
 						"description": "sugestões de body para testar o campo category:\n\n``` json\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": \"\"\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n},\n{\n    \"description\": \"despesa\",\n    \"value\": 99,\n    \"date\": \"2022-08-14\",\n    \"category\": null\n}\n\n```"
@@ -471,7 +467,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"description\": \"transporte\"}"
+							"raw": "{\"description\": \"LAZER\"}"
 						},
 						"url": {
 							"raw": "{{host}}/expensesCategories",
@@ -765,14 +761,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/users/email/email@domain.com",
+							"raw": "{{host}}/users/email/a.a@a.com",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"users",
 								"email",
-								"email@domain.com"
+								"a.a@a.com"
 							]
 						}
 					},
@@ -794,14 +790,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/users/id/6422588b6eab27c461f14e29",
+							"raw": "{{host}}/users/id/64e695a3f292791a4a5080c1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"users",
 								"id",
-								"6422588b6eab27c461f14e29"
+								"64e695a3f292791a4a5080c1"
 							]
 						}
 					},
@@ -829,7 +825,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"user\",\r\n    \"email\": \"email@domain.com\",\r\n    \"password\": \"{{userPassword}}\"\r\n}"
+							"raw": "{\r\n    \"name\": \"user\",\r\n    \"email\": \"user@sqn.com\",\r\n    \"password\": \"{{userPassword}}\"\r\n}"
 						},
 						"url": {
 							"raw": "{{host}}/users",
@@ -868,14 +864,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{host}}/users/id/641bc253f78628c5d37ff1eb",
+							"raw": "{{host}}/users/id/64c46bdd82786540eb8cfb66",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"users",
 								"id",
-								"641bc253f78628c5d37ff1eb"
+								"64c46bdd82786540eb8cfb66"
 							]
 						}
 					},
