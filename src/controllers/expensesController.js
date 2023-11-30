@@ -9,31 +9,32 @@ const defaultExpenseCategoryId = "630434804cbef5fa4fa579a2";
 
 class ExpensesController {
   static list = (req, res) => {
-    const descriptionQuery = req.query.description;
+    expenses.find()
+      .populate('category', 'description')
+      .exec((error, expenses) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).json({message: 'Error retrieving expenses'});
+      }
+      
+      return res.status(200).json(expenses);
+    });
+  };
 
-    if (descriptionQuery) {
-      expenses.find({description: {$regex: descriptionQuery, $options: 'i'}})
-        .populate('category', 'description')
-        .exec((error, expenses) => {
-          if (error) {
-            return res.status(500).json({message: 'Error retrieving expenses by query'});
-            console.log(error);
-          }
-          return res.status(200).json(expenses);
-        });
-    } else {
-      expenses.find()
-        .populate('category', 'description')
-        .exec((error, expenses) => {
+  static findByDescription = (req, res) => {
+    const description = req.params.description;
+  
+    expenses.find({description: {$regex: description, $options: 'i'}})
+      .populate('category', 'description')
+      .exec((error, expenses) => {
         if (error) {
-          return res.status(500).json({message: 'Error retrieving expenses'});
           console.log(error);
+          return res.status(500).json({message: 'Error retrieving expenses by query'});
         }
-        
+
         return res.status(200).json(expenses);
       });
-    }
-  };
+  }
     
   static findById = (req, res) => { 
     const id = req.params.id;
@@ -51,10 +52,6 @@ class ExpensesController {
 
   static findByYearAndMonth = (req, res) => {
     const {year, month} = req.params;
-
-    if (year.length != 4) {
-      return res.status(400).json({message: 'year must have 4 digits'});
-    }
     
     expenses.find({
         $expr: {
@@ -66,8 +63,8 @@ class ExpensesController {
       })
       .exec((error, expenses) => {
         if (error) {
-          return res.status(500).json({message: 'Error retrieving expenses by year and month'});
           console.log(error);
+          return res.status(500).json({message: 'Error retrieving expenses by year and month'});
         }
 
         return res.status(200).json(expenses);
