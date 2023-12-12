@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8ab3b6ef-2a2c-42bd-820a-56ce7078c1a7",
+		"_postman_id": "53689ecd-e0c9-4d05-8021-dd6202eabd7e",
 		"name": "Alura Challenge Back-end 4-doc",
 		"description": "StartFragment\n\nAlura Challenge Back-end 4: API para controle de orçamento familiar (agosto / 2022)\n\n- Links oficiais do challenge: \\* [https://www.alura.com.br/challenges/back-end-4/semana-01-implementando-api-rest](https://www.alura.com.br/challenges/back-end-4/semana-01-implementando-api-rest) \\* [https://trello.com/b/ofAXrAlA/challenge-backend-semana-1](https://trello.com/b/ofAXrAlA/challenge-backend-semana-1) \\* [https://www.alura.com.br/challenges/back-end-4/semana-02-mudancas-api-novas-funcionalidades](https://www.alura.com.br/challenges/back-end-4/semana-02-mudancas-api-novas-funcionalidades) \\* [https://trello.com/b/tKBmD8P6/challenge-backend-semana-2](https://trello.com/b/tKBmD8P6/challenge-backend-semana-2) \\* [https://www.alura.com.br/challenges/back-end-4/semana-03-04-seguranca-deploy-api](https://www.alura.com.br/challenges/back-end-4/semana-03-04-seguranca-deploy-api) \\* [https://trello.com/b/qFYXUVXJ/challenge-backend-semana-3](https://trello.com/b/qFYXUVXJ/challenge-backend-semana-3)\n- Tasks (cópia do trello do Challenge): \\* [https://trello.com/b/LL2pc08f/challenge-backend-alura-semana-1](https://trello.com/b/LL2pc08f/challenge-backend-alura-semana-1) \\* [https://trello.com/b/RK6N4fBh/challenge-backend-alura-semana-2](https://trello.com/b/RK6N4fBh/challenge-backend-alura-semana-2) \\* [https://trello.com/b/dLfm1W5j/challenge-backend-alura-semana-3](https://trello.com/b/dLfm1W5j/challenge-backend-alura-semana-3)\n- ferramentas / tecnologias:\n    - banco de dados MongoDB Atlas: serviço de banco em nuvem\n- requisições + variáveis de ambiente:\n    - ao fazer requisições para servidor \"local\", considerar na environment variable \"host\" o host:porta, ex: [http://localhost:3030](http://localhost:3030)\n    - ao fazer requisiçoes para servidor externo (online / cloud), testar requisição com e sem a porta, para ver qual se aplica, ex sem a porta: [https://family-budget-vwpp.onrender.com](https://family-budget-vwpp.onrender.com)\n\nEndFragment",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -41,7 +41,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"user@sqn.com\",\r\n    \"password\": \"{{userPassword}}\"\r\n}"
+							"raw": "{\r\n    \"email\": \"admin@sqn.com\",\r\n    \"password\": \"{{userPassword}}\"\r\n}"
 						},
 						"url": {
 							"raw": "{{host}}/login",
@@ -322,7 +322,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"bus\",\r\n    \"value\": 15,\r\n    \"date\": \"2023-11-04\",\r\n    \"category\": \"642258d46eab27c461f14e30\"\r\n}"
+							"raw": "{\r\n    \"description\": \"uber\",\r\n    \"value\": 15,\r\n    \"date\": \"2023-12-29\",\r\n    \"category\": \"642258d46eab27c461f14e30\"\r\n}"
 						},
 						"url": {
 							"raw": "{{host}}/expenses",
@@ -359,7 +359,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"bus\",\r\n    \"value\": 20,\r\n    \"date\": \"2023-11-12\",\r\n    \"category\": \"6304345a4cbef5fa4fa57996\"\r\n}"
+							"raw": "{\r\n    \"description\": \"99 taxi\",\r\n    \"value\": 49,\r\n    \"date\": \"2023-11-27\",\r\n    \"category\": \"6304345a4cbef5fa4fa57996\"\r\n}"
 						},
 						"url": {
 							"raw": "{{host}}/expenses/656555d1fc6c42f2c90121a5",
@@ -529,13 +529,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/receipts/63c61a5f7f810b6bf393f7f4",
+							"raw": "{{host}}/receipts/656e900a43d9c75663349c80",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"receipts",
-								"63c61a5f7f810b6bf393f7f4"
+								"656e900a43d9c75663349c80"
 							]
 						}
 					},
@@ -557,18 +557,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/receipts?description=cri",
+							"raw": "{{host}}/receipts/description/jo",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"receipts"
-							],
-							"query": [
-								{
-									"key": "description",
-									"value": "cri"
-								}
+								"receipts",
+								"description",
+								"jo"
 							]
 						}
 					},
@@ -590,13 +586,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/receipts/2022/12",
+							"raw": "{{host}}/receipts/2023/12",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"receipts",
-								"2022",
+								"2023",
 								"12"
 							]
 						}
@@ -625,7 +621,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"job\",\r\n    \"value\": 1000,\r\n    \"date\": \"2022-03-10\"\r\n}"
+							"raw": "{\r\n    \"description\": \"job\",\r\n    \"value\": 100,\r\n    \"date\": \"2023-12-08\"\r\n}"
 						},
 						"url": {
 							"raw": "{{host}}/receipts",
@@ -661,16 +657,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"job\",\r\n    \"value\": 1500,\r\n    \"date\": \"2023-03-10\"\r\n}"
+							"raw": "{\r\n    \"value\": 1500,\r\n    \"date\": \"2023-12-11\"\r\n}"
 						},
 						"url": {
-							"raw": "{{host}}/receipts/64225a34758b5c675d398cc3",
+							"raw": "{{host}}/receipts/6577ae6368a6c189708c95e3",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"receipts",
-								"64225a34758b5c675d398cc3"
+								"6577ae6368a6c189708c95e3"
 							]
 						}
 					},
@@ -701,13 +697,13 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{host}}/receipts/64225a61758b5c675d398cc8",
+							"raw": "{{host}}/receipts/656e900a43d9c75663349c80",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"receipts",
-								"64225a61758b5c675d398cc8"
+								"656e900a43d9c75663349c80"
 							]
 						}
 					},
@@ -825,7 +821,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"user\",\r\n    \"email\": \"user@sqn.com\",\r\n    \"password\": \"{{userPassword}}\"\r\n}"
+							"raw": "{\r\n    \"name\": \"admin\",\r\n    \"email\": \"admin@sqn.com\",\r\n    \"password\": \"{{userPassword}}\"\r\n}"
 						},
 						"url": {
 							"raw": "{{host}}/users",
