@@ -1,3 +1,5 @@
+Projeto finalizado, porque há muito já atendeu ao respectivo Challenge. Porém continuará (clone) em um projeto pessoal próprio, que em um futuro não muito distante (assim espero) também será tornado púlico. :)
+
 Alura Challenge Back-end 4: API para controle de orçamento familiar
 
 [Documentação (pasta doc) com os passos para executar a API localmente/localhost (no seu computador)](https://github.com/Goliass/alura-challenge-back-end-4/tree/main/doc)
